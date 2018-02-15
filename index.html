@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jeuler</title>
+</head>
+<body>
+ <textarea id="content" rows="25" cols="80" readonly="readonly"></textarea>
+</body>
+<script>
+
+    function* nums() {
+        for (var n = 0;;n++) {
+            yield(n);
+        }
+    }
+
+    function* take(n, iterable) {
+        for (let x of iterable) {
+            if (n-- <= 0) return;
+            yield x;
+        }
+    }
+
+    function* takeWhile(iterable, whileFunc) {
+        for (let i of iterable) {
+            if(!whileFunc(i)) return i;
+            yield i;
+        }
+    }
+
+
+    function* map(iterable, mapFunc) {
+        for (let x of iterable) {
+            yield mapFunc(x);
+        }
+    }
+
+    function* filter(iterable, filterFunc) {
+        for (let x of iterable) {
+            if (filterFunc(x)) {
+                yield x;
+            }
+        }
+    }
+
+    function reduce(iterable, initial, reduceFunc) {
+        let i = initial;
+        for (let x of iterable) {
+            i = reduceFunc(i,x);
+        }
+        return i;
+    }
+
+    function* fibonacci() {
+        for (let a = 1, b = 2;; [a, b] = [b, a + b])
+            yield a;
+    }
+
+    function euler001() {
+        t = take(1000, nums());
+        f = filter(t,i=>(i%3==0)||(i%5==0));
+        r = reduce(f,0,(a,b)=>a+b);
+        return r;
+    }
+
+    function euler002() {
+        n = fibonacci();
+        t = takeWhile(n,i=>i<4000000);
+        f = filter(t,i=>i%2==0);
+        r = reduce(f,0,(a,b)=>a+b);
+        return r;
+    }
+
+        window.onload = function(ev) {
+        var div = document.getElementById('content');
+
+        div.textContent += euler002() + '\n';
+
+        /*
+        f = fibonacci();
+        t = takeWhile(f,i=>i<1000);
+        for(let i of t) {
+            div.textContent += i + '\n';
+        }
+        */
+
+    }
+</script>
+</html>
