@@ -29,7 +29,6 @@
         }
     }
 
-
     function* map(iterable, mapFunc) {
         for (let x of iterable) {
             yield mapFunc(x);
@@ -57,6 +56,49 @@
             yield a;
     }
 
+    function* primes() {
+        let list =  [2,3,5,7,11,13,17];
+
+        for(let p of list)
+            yield p;
+
+        for(let next = list[list.length-1]+1,factorIndex = 0;;) {
+            if (next%list[factorIndex] == 0) {
+                factorIndex = 0;
+                next++;
+            } else if (list[factorIndex]**2 >= next) {
+                yield next;
+                list.push(next);
+                next++;
+                factorIndex = 0;
+            } else {
+                factorIndex++;
+            }
+        }
+    }
+
+    function* primeFactors(n) {
+        yield* filter(takeWhile(primes(),p=>p*p<n),p=>n%p==0);
+    }
+
+    function toDigits(n) {
+        let d=[];
+        for(;n>0;) {
+            let m = n%10;
+            d.push(m);
+            n=(n-m)/10;
+        }
+        return d;
+    }
+
+    function isPalindrome(arr) {
+        for(let i=0, j=arr.length-1; j>i; i++,j--) {
+            if (arr[i] != arr[j])
+                return false;
+        }
+        return true;
+    }
+
     function euler001() {
         t = take(1000, nums());
         f = filter(t,i=>(i%3==0)||(i%5==0));
@@ -72,19 +114,22 @@
         return r;
     }
 
-        window.onload = function(ev) {
+    function euler003() {
+        return primeFactors(600851475143);
+    }
+
+    function euler004() {
+        for(let i = 99; i>9; i--) {
+            
+        }
+    }
+
+    window.onload = function(ev) {
         var div = document.getElementById('content');
 
-        div.textContent += euler002() + '\n';
-
-        /*
-        f = fibonacci();
-        t = takeWhile(f,i=>i<1000);
-        for(let i of t) {
-            div.textContent += i + '\n';
+        for(let n of euler003()) {
+            div.textContent += n + '\n';
         }
-        */
-
     }
 </script>
 </html>
