@@ -99,10 +99,23 @@
         let d=[];
         for(;n>0;) {
             let m = n%10;
-            d.push(m);
+            d.unshift(m);
             n=(n-m)/10;
         }
         return d;
+    }
+
+    function fromDigits(digits) {
+        let n=0;
+        for(let d of digits) {
+            n = n*10 + d;
+        }
+        return n;
+    }
+
+    
+    function max(iterable) {
+        return reduce(iterable, Number.MIN_VALUE, Math.max);
     }
 
     function isPalindrome(arr) {
@@ -113,25 +126,6 @@
         return true;
     }
 
-    function euler001() {
-        t = take(nums(), 1000);
-        f = filter(t,i=>(i%3==0)||(i%5==0));
-        r = reduce(f,0,(a,b)=>a+b);
-        return r;
-    }
-
-    function euler002() {
-        n = fibonacci();
-        t = takeWhile(n,i=>i<4000000);
-        f = filter(t,i=>i%2==0);
-        r = reduce(f,0,(a,b)=>a+b);
-        return r;
-    }
-
-    function euler003() {
-        return primeFactors(600851475143);
-    }
-    
     function dump(i) {
         for(let j = i.next(); !j.done;) {
             v = j.value;
@@ -140,5 +134,36 @@
         }
     }
 
-//dump(takeWhile(primes(),i=>i<100));
-dump(take(product(primes(),nums()),10));
+    function euler001() {
+        t = take(nums(), 1000);
+        f = filter(t,i=>(i%3==0)||(i%5==0));
+        r = reduce(f,0,(a,b)=>a+b);
+        console.log(r);
+    }
+
+    function euler002() {
+        n = fibonacci();
+        t = takeWhile(n,i=>i<4000000);
+        f = filter(t,i=>i%2==0);
+        r = reduce(f,0,(a,b)=>a+b);
+        console.log(r);
+    }
+
+    function euler003() {
+        r = primeFactors(600851475143);
+        console.log(r);
+    }
+
+    function euler004() {
+        a = take(nums(), 1000);
+        b = take(nums(), 1000);
+        p = product(a,b);
+        m = map(p, i=>i[0]*i[1]);
+        n = map(m, toDigits);
+        f = filter(n, isPalindrome);
+        g = map(f, fromDigits);
+        h = max(g);
+        console.log(h);
+    }
+    
+euler004();
