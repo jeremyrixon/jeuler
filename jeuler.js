@@ -5,7 +5,7 @@
         }
     }
 
-    function* take(n, iterable) {
+    function* take(iterable, n) {
         for (let x of iterable) {
             if (n-- <= 0) return;
             yield x;
@@ -70,6 +70,31 @@
         yield* filter(takeWhile(primes(),p=>p*p<n),p=>n%p==0);
     }
 
+    function* product(a, b) {
+        let i = a.next();
+        let j = b.next();
+        let m = [];
+        let n = [];
+        while(!i.done || !j.done) {
+            if (!i.done) {
+                mm = i.value;
+                for(let nn of n) {
+                    yield [mm, nn];
+                }
+                m.push(mm);
+                i = a.next();
+            }
+            if (!j.done) {
+                nn = j.value;
+                for(let mm of m) {
+                    yield [mm, nn];
+                }
+                n.push(nn);
+                j = b.next();
+            }
+        }
+    }
+
     function toDigits(n) {
         let d=[];
         for(;n>0;) {
@@ -89,7 +114,7 @@
     }
 
     function euler001() {
-        t = take(1000, nums());
+        t = take(nums(), 1000);
         f = filter(t,i=>(i%3==0)||(i%5==0));
         r = reduce(f,0,(a,b)=>a+b);
         return r;
@@ -115,4 +140,5 @@
         }
     }
 
-dump(takeWhile(primes(),i=>i<100));
+//dump(takeWhile(primes(),i=>i<100));
+dump(take(product(primes(),nums()),10));
